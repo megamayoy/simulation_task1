@@ -50,7 +50,6 @@ namespace Task1
             {
                 Server new_server = new Server();
                 Servers.Add(new_server);
-                MessageBox.Show(Servers.Count.ToString());
                 new_server.ServiceTimeDistribution = new List<TimeDistribution>();
 
                 for (int j = 0; j < InputGrdView.RowCount; j++)
@@ -119,7 +118,7 @@ namespace Task1
         void show_results(List<SimualtionCase> Customers)
         {
 
-            MessageBox.Show("rows" + OutputGrdView.RowCount.ToString());
+           // MessageBox.Show("rows" + OutputGrdView.RowCount.ToString());
 
             DataTable dt = new DataTable();
             dt.Columns.Add("CustomerNo");

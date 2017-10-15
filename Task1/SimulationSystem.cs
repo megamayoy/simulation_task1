@@ -13,7 +13,7 @@ namespace Task1
         List<SimualtionCase> Customers;
         int NoServers;
         List<int> FreeServers = new List<int>();
-        //this function calculates the cumlative probability on each server (note:server[0] contains the interaarival time dist table)
+
         public void CompleteServiceTimeDistributionData(int NoOfServers, int NoOfRows, List<Server> SystemServers)
         {
             NoServers = NoOfServers;
@@ -51,7 +51,21 @@ namespace Task1
 
         }
 
-        private int GetTimeFromRange(Server CurrenentServer, SimualtionCase CurrentCustomer)
+        private int GetServiceTimeFromRange(Server CurrenentServer, SimualtionCase CurrentCustomer)
+        {
+            int LoopCount = CurrenentServer.ServiceTimeDistribution.Count;
+            for (int i = 0; i < LoopCount; i++)
+            {
+                if (CurrentCustomer.RandomServiceTime >= CurrenentServer.ServiceTimeDistribution[i].MinRange &&
+                               CurrentCustomer.RandomServiceTime <= CurrenentServer.ServiceTimeDistribution[i].MaxRange)
+                {
+                    return CurrenentServer.ServiceTimeDistribution[i].Time;
+                }
+            }
+            return -1;
+        }
+
+        private int GetInterarrivalTimeFromRange(Server CurrenentServer, SimualtionCase CurrentCustomer)
         {
             int LoopCount = CurrenentServer.ServiceTimeDistribution.Count;
             for (int i = 0; i < LoopCount; i++)
@@ -91,7 +105,7 @@ namespace Task1
                     if (i != 0)
                     {
                         Customers[i].RandomInterarrivalTime = Rnd.Next(100);
-                        Customers[i].InterarrivalTime = this.GetTimeFromRange(Servers[0], Customers[i]);
+                        Customers[i].InterarrivalTime = this.GetInterarrivalTimeFromRange(Servers[0], Customers[i]);
                         Customers[i].ArrivalTime = Customers[i - 1].ArrivalTime + Customers[i].InterarrivalTime;
                     }
                     else
@@ -127,7 +141,7 @@ namespace Task1
 
                     Customers[i].AssignedServer = Servers[FirstIdleID];
                     Customers[i].TimeServiceBegins = Customers[i].ArrivalTime + Customers[i].WaitingTime;
-                    Customers[i].ServiceTime = this.GetTimeFromRange(Customers[i].AssignedServer, Customers[i]);
+                    Customers[i].ServiceTime = this.GetServiceTimeFromRange(Customers[i].AssignedServer, Customers[i]);
                     Customers[i].TimeServiceEnds = Customers[i].TimeServiceBegins + Customers[i].ServiceTime;
                     Servers[FirstIdleID].ServerEndTime = Customers[i].TimeServiceEnds;
                 }
@@ -145,7 +159,7 @@ namespace Task1
                     if (i != 0)
                     {
                         CurrentCustomer.RandomInterarrivalTime = Rnd.Next(100);
-                        CurrentCustomer.InterarrivalTime = this.GetTimeFromRange(Servers[0], CurrentCustomer);
+                        CurrentCustomer.InterarrivalTime = this.GetInterarrivalTimeFromRange(Servers[0], CurrentCustomer);
                         CurrentCustomer.ArrivalTime = Customers[i - 1].ArrivalTime + CurrentCustomer.InterarrivalTime;
                     }
                     else
@@ -176,7 +190,7 @@ namespace Task1
                         CurrentCustomer.WaitingTime = CurrentCustomer.ArrivalTime - Servers[FirstIdleID].ServerEndTime;
                     CurrentCustomer.AssignedServer = Servers[FirstIdleID];
                     CurrentCustomer.TimeServiceBegins = CurrentCustomer.ArrivalTime + CurrentCustomer.WaitingTime;
-                    CurrentCustomer.ServiceTime = this.GetTimeFromRange(CurrentCustomer.AssignedServer, CurrentCustomer);
+                    CurrentCustomer.ServiceTime = this.GetServiceTimeFromRange(CurrentCustomer.AssignedServer, CurrentCustomer);
 
                     CurrentCustomer.TimeServiceEnds = CurrentCustomer.TimeServiceBegins + CurrentCustomer.ServiceTime;
                     Servers[FirstIdleID].ServerEndTime = CurrentCustomer.TimeServiceEnds;
@@ -200,7 +214,7 @@ namespace Task1
                     if (i != 0)
                     {
                         Customers[i].RandomInterarrivalTime = Rnd.Next(100);
-                        Customers[i].InterarrivalTime = this.GetTimeFromRange(Servers[0], Customers[i]);
+                        Customers[i].InterarrivalTime = this.GetInterarrivalTimeFromRange(Servers[0], Customers[i]);
                         Customers[i].ArrivalTime = Customers[i - 1].ArrivalTime + Customers[i].InterarrivalTime;
                     }
                     else
@@ -240,7 +254,7 @@ namespace Task1
                     }
 
                     Customers[i].TimeServiceBegins = Customers[i].ArrivalTime + Customers[i].WaitingTime;
-                    Customers[i].ServiceTime = this.GetTimeFromRange(Customers[i].AssignedServer, Customers[i]);
+                    Customers[i].ServiceTime = this.GetServiceTimeFromRange(Customers[i].AssignedServer, Customers[i]);
                     Customers[i].TimeServiceEnds = Customers[i].TimeServiceBegins + Customers[i].ServiceTime;
                     Servers[AssignedServer].ServerEndTime = Customers[i].TimeServiceEnds;
                 }
@@ -259,7 +273,7 @@ namespace Task1
                     if (i != 0)
                     {
                         CurrentCustomer.RandomInterarrivalTime = Rnd.Next(100);
-                        CurrentCustomer.InterarrivalTime = this.GetTimeFromRange(Servers[0], CurrentCustomer);
+                        CurrentCustomer.InterarrivalTime = this.GetInterarrivalTimeFromRange(Servers[0], CurrentCustomer);
                         CurrentCustomer.ArrivalTime = Customers[i - 1].ArrivalTime + CurrentCustomer.InterarrivalTime;
                     }
                     else
@@ -299,10 +313,10 @@ namespace Task1
                     }
 
                     CurrentCustomer.TimeServiceBegins = CurrentCustomer.ArrivalTime + CurrentCustomer.WaitingTime;
-                    CurrentCustomer.ServiceTime = this.GetTimeFromRange(CurrentCustomer.AssignedServer, CurrentCustomer);
+                    CurrentCustomer.ServiceTime = this.GetServiceTimeFromRange(CurrentCustomer.AssignedServer, CurrentCustomer);
                     CurrentCustomer.TimeServiceEnds = CurrentCustomer.TimeServiceBegins + CurrentCustomer.ServiceTime;
                     Servers[AssignedServer].ServerEndTime = CurrentCustomer.TimeServiceEnds;
-                   // Customers.Add(CurrentCustomer);
+                    Customers.Add(CurrentCustomer);
                 }
                 return Customers;
             }
