@@ -194,7 +194,7 @@
             // 
             // statbutton
             // 
-            this.statbutton.Location = new System.Drawing.Point(31, 310);
+            this.statbutton.Location = new System.Drawing.Point(31, 328);
             this.statbutton.Name = "statbutton";
             this.statbutton.Size = new System.Drawing.Size(104, 42);
             this.statbutton.TabIndex = 15;
@@ -204,9 +204,10 @@
             // 
             // showgraph_btn
             // 
-            this.showgraph_btn.Location = new System.Drawing.Point(31, 368);
+            this.showgraph_btn.Location = new System.Drawing.Point(31, 299);
             this.showgraph_btn.Name = "showgraph_btn";
-            this.showgraph_btn.Size = new System.Drawing.Size(85, 32);
+            this.showgraph_btn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.showgraph_btn.Size = new System.Drawing.Size(99, 23);
             this.showgraph_btn.TabIndex = 16;
             this.showgraph_btn.Text = "Show Graphs";
             this.showgraph_btn.UseVisualStyleBackColor = true;
