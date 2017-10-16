@@ -28,7 +28,13 @@ namespace Task1
 
         public void AppendNewUnitTimes(int Units)
         {
-            for (int i = QueueLength.Count; i < QueueLength.Count + Units; i++)
+           /* if(QueueLength.Count==0)
+            {
+                QueueLength.Add(0);
+                return;
+            }*/
+            int Cnt = QueueLength.Count;
+            for (int i =Cnt ; i < Cnt + Units+1; i++)
             {
                 QueueLength.Add(0);
             }
