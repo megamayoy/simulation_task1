@@ -36,3 +36,4 @@ C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.Form1.resources
 C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.Properties.Resources.resources
 C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.csproj.GenerateResource.Cache
 C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.statform.resources
+C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.graphform.resources

@@ -269,6 +269,7 @@ namespace Task1
                         Customers[i].RandomServiceTime = 0;
                 }
                 return Customers;
+                
             }
 
             else if (SelectionMethod == Enums.ServerSelectionMethod.Random && StoppingCondition == Enums.ServerStoppingCondition.SimulationEndTime)
@@ -350,6 +351,42 @@ namespace Task1
                 return new List<SimualtionCase>();
             }
         }
+
+        public List<List<int> >graph_data()
+        {
+          
+
+
+            List< List<int> > data = new List<List<int> >();
+            //initializing the graph data list so that it contains lists equal to the number of servers 
+
+            for (int y = 1; y <= NoServers; y++)
+            {
+
+                data.Add(new List<int>() );
+
+            }
+
+            for (int i = 0; i < Customers.Count; i++)
+            { 
+                //get server 
+                int server_id = Customers[i].AssignedServer.ServerId;
+                //get service time start
+                int service_start = Customers[i].TimeServiceBegins;
+                int service_end = Customers[i].TimeServiceEnds;
+                //get busy units of time of current server
+                for (int j = service_start; j < service_end; j++)
+                {
+                    data[server_id].Add(j);
+                }
+
+            }
+
+             return data;        
+        }
+
+
+
     }
 }
 

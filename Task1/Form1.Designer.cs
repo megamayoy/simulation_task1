@@ -44,6 +44,7 @@
             this.SimBtn = new System.Windows.Forms.Button();
             this.GetinputBtn = new System.Windows.Forms.Button();
             this.statbutton = new System.Windows.Forms.Button();
+            this.showgraph_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.InputGrdView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OutputGrdView)).BeginInit();
             this.SuspendLayout();
@@ -201,11 +202,22 @@
             this.statbutton.UseVisualStyleBackColor = true;
             this.statbutton.Click += new System.EventHandler(this.statbutton_Click);
             // 
+            // showgraph_btn
+            // 
+            this.showgraph_btn.Location = new System.Drawing.Point(31, 368);
+            this.showgraph_btn.Name = "showgraph_btn";
+            this.showgraph_btn.Size = new System.Drawing.Size(85, 32);
+            this.showgraph_btn.TabIndex = 16;
+            this.showgraph_btn.Text = "Show Graphs";
+            this.showgraph_btn.UseVisualStyleBackColor = true;
+            this.showgraph_btn.Click += new System.EventHandler(this.showgraph_btn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1240, 691);
+            this.Controls.Add(this.showgraph_btn);
             this.Controls.Add(this.statbutton);
             this.Controls.Add(this.GetinputBtn);
             this.Controls.Add(this.SimBtn);
@@ -249,6 +261,7 @@
         private System.Windows.Forms.Button SimBtn;
         private System.Windows.Forms.Button GetinputBtn;
         private System.Windows.Forms.Button statbutton;
+        private System.Windows.Forms.Button showgraph_btn;
     }
 }
 

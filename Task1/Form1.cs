@@ -256,6 +256,32 @@ namespace Task1
 
         }
 
+        private void showgraph_btn_Click(object sender, EventArgs e)
+        {
+
+            List<List<int>> graph_data = SimSystem.graph_data();
+
+            //iterate on each server and get its busy unit times
+            for (int i = 1; i < graph_data.Count; i++)
+            {
+                  //create graph for each server
+                graphform g = new graphform();
+                g.graph.ChartAreas[0].AxisX.Interval = 1;
+                for(int y = 0 ; y<graph_data[i].Count;y++)
+                {
+                    int busy = graph_data[i][y];
+                    g.graph.Series["status"].Points.AddXY(busy,1);
+                }
+                g.Text = "Server " + i.ToString();
+                g.Show();
+            
+            }
+
+
+        }
+
+     
+
   
        
 
