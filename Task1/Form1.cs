@@ -127,19 +127,26 @@ namespace Task1
 
 
             NoServers = Int32.Parse(NoServersTxt.Text) + 1;
-            List<int> servtime_per_server = new List<int>(NoServers);
-            List<int> custnum_per_server = new List<int>(NoServers);
+            List<int> servtime_per_server = new List<int>();
+            List<int> custnum_per_server = new List<int>();
+            //total runtime = time service end of the last customer
             int total_runtime = 0;
+            total_runtime = Customers[Customers.Count - 1].TimeServiceEnds;
 
+            List<int> queue_length = new List<int>();
+            //initializing the queue_length at time 0 to total runtime units
+
+            for (int i = 0; i <= total_runtime; i++)
+            {
+                queue_length.Add(0);
+               
+            }
 
             //initialize service time per server & customers number per server with zero
             for (int d = 0; d < NoServers; d++)
-            {   
-                
+            {
                 servtime_per_server.Add(0);
                 custnum_per_server.Add(0);
-
-                
             }
 
             int total_customers_waiting_time = 0;
@@ -172,12 +179,15 @@ namespace Task1
                 }
                 total_customers_waiting_time += Customers[i].WaitingTime;
 
-                //total runtime = time service end of the last customer
-                if (i == Customers.Count - 1)
+         //calculating length of queue during runtime  (if service begin > arrival time of customer then they waited in queue)
+                if (Customers[i].TimeServiceBegins > Customers[i].ArrivalTime)
                 {
-                    total_runtime = Customers[i].TimeServiceEnds;
-                
+                    int waiting_units = Customers[i].TimeServiceBegins - Customers[i].ArrivalTime;
+
+                    for (int y = Customers[i].ArrivalTime; y <= waiting_units; y++)
+                           queue_length[y]++;
                 }
+
 
                 dt.Rows.Add(dr);
             }
@@ -207,7 +217,7 @@ namespace Task1
             Console.WriteLine("Average waiting time in queue = "+ (float)total_customers_waiting_time/num_of_waited_customers);
 
 
-
+            Console.WriteLine("Max Queue Length = " + queue_length.Max());
             
 
             

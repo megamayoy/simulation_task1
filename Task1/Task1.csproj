@@ -80,7 +80,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Task-Class Library\multichannelqueuemodels\multichannelqueuemodels\MultiChannelQueueModels.csproj">
+    <ProjectReference Include="F:\studying\year4\simulation\multichannelqueuemodels\multichannelqueuemodels\MultiChannelQueueModels.csproj">
       <Project>{30d68d92-28bd-4b28-bc96-74cc13dbef31}</Project>
       <Name>MultiChannelQueueModels</Name>
     </ProjectReference>
