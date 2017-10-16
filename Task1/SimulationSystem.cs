@@ -21,7 +21,7 @@ namespace Task1
             int Cols = 0;
             for (int i = 0; i < NoServers; i++)
             {
-                Servers[i].ServerId = i ;
+                Servers[i].ServerId = i;
                 double CummProbability = 0.0;
                 for (int j = 0; j < Servers[i].ServiceTimeDistribution.Count; j++)
                 {
@@ -33,16 +33,11 @@ namespace Task1
                     else
                     {
                         CummProbability += Servers[i].ServiceTimeDistribution[j].Probability;
-                        // min range is the equal to the max range of the previous row + 1
-                        Servers[i].ServiceTimeDistribution[j].MinRange = Servers[i].ServiceTimeDistribution[j-1].MaxRange + 1;
+                        Servers[i].ServiceTimeDistribution[j].MinRange = Servers[i].ServiceTimeDistribution[j - 1].MaxRange + 1;
                     }
 
                     Servers[i].ServiceTimeDistribution[j].CummProbability = CummProbability;
-
-                    if (j == NoOfRows - 1)
-                        Servers[i].ServiceTimeDistribution[j].MaxRange = 0;
-                    else
-                        Servers[i].ServiceTimeDistribution[j].MaxRange = Servers[i].ServiceTimeDistribution[j].CummProbability * 100.0f;
+                    Servers[i].ServiceTimeDistribution[j].MaxRange =Math.Floor( Servers[i].ServiceTimeDistribution[j].CummProbability * 100.0f);
                     Servers[i].Status = false;
                     Servers[i].ServerEndTime = 0;
                 }
@@ -96,16 +91,20 @@ namespace Task1
             if (SelectionMethod == Enums.ServerSelectionMethod.HighestPriority && StoppingCondition == Enums.ServerStoppingCondition.NumberOfCustomers)
             {
                 int NoOfCustomers = Int32.Parse(TextBoxData.ToString());
-                
+                Customers = new List<SimualtionCase>(NoOfCustomers);
                 for (int i = 0; i < NoOfCustomers; i++)
                 {
-                    SimualtionCase new_sc = new SimualtionCase();
-                    Customers.Add(new_sc);
+                    SimualtionCase NewCustomer = new SimualtionCase();
+                    Customers.Add(NewCustomer);
                     Customers[i].CustomerNumber = i + 1;
                     if (i != 0)
                     {
-                        Customers[i].RandomInterarrivalTime = Rnd.Next(100);
+                        Customers[i].RandomInterarrivalTime = Rnd.Next(1, 101);
                         Customers[i].InterarrivalTime = this.GetInterarrivalTimeFromRange(Servers[0], Customers[i]);
+                        if (Customers[i].RandomInterarrivalTime == 100)
+                            Customers[i].RandomInterarrivalTime = 0;
+
+
                         Customers[i].ArrivalTime = Customers[i - 1].ArrivalTime + Customers[i].InterarrivalTime;
                     }
                     else
@@ -114,8 +113,8 @@ namespace Task1
                         Customers[i].InterarrivalTime = -1;
                         Customers[i].ArrivalTime = 0;
                     }
-                    Customers[i].RandomServiceTime = Rnd.Next(100);
-
+                    Customers[i].RandomServiceTime = Rnd.Next(1, 101);
+                    //Customers[i].RandomServiceTime = 100;
                     Server FirstIdle = new Server();
                     FirstIdle.ServerEndTime = 100000;
                     int FirstIdleID = -1;
@@ -127,7 +126,7 @@ namespace Task1
                             FirstIdleID = q;
                             break;
                         }
-                            //if that current server end time is greater that customers arrival time, pick the one that will finish early
+                        //if that current server end time is greater that customers arrival time, pick the one that will finish early
                         else if (Servers[q].ServerEndTime < FirstIdle.ServerEndTime)
                         {
                             FirstIdle = Servers[q];
@@ -136,7 +135,7 @@ namespace Task1
                     }
                     // if all servers are busy and customer has to wait then calculate wait time
                     if (Servers[FirstIdleID].ServerEndTime > Customers[i].ArrivalTime)
-                        Customers[i].WaitingTime = (Servers[FirstIdleID].ServerEndTime-Customers[i].ArrivalTime );
+                        Customers[i].WaitingTime = (Servers[FirstIdleID].ServerEndTime - Customers[i].ArrivalTime);
 
 
                     Customers[i].AssignedServer = Servers[FirstIdleID];
@@ -144,13 +143,15 @@ namespace Task1
                     Customers[i].ServiceTime = this.GetServiceTimeFromRange(Customers[i].AssignedServer, Customers[i]);
                     Customers[i].TimeServiceEnds = Customers[i].TimeServiceBegins + Customers[i].ServiceTime;
                     Servers[FirstIdleID].ServerEndTime = Customers[i].TimeServiceEnds;
+                    if (Customers[i].RandomServiceTime == 100)
+                        Customers[i].RandomServiceTime = 0;
                 }
                 return Customers;
             }
 
             else if (SelectionMethod == Enums.ServerSelectionMethod.HighestPriority && StoppingCondition == Enums.ServerStoppingCondition.SimulationEndTime)
             {
-                
+
                 int SimulationEndTime = Int32.Parse(TextBoxData), i = 0;
                 while (true)
                 {
@@ -158,9 +159,11 @@ namespace Task1
                     CurrentCustomer.CustomerNumber = i + 1;
                     if (i != 0)
                     {
-                        CurrentCustomer.RandomInterarrivalTime = Rnd.Next(100);
+                        CurrentCustomer.RandomInterarrivalTime = Rnd.Next(1, 101);
                         CurrentCustomer.InterarrivalTime = this.GetInterarrivalTimeFromRange(Servers[0], CurrentCustomer);
                         CurrentCustomer.ArrivalTime = Customers[i - 1].ArrivalTime + CurrentCustomer.InterarrivalTime;
+                        if (CurrentCustomer.RandomInterarrivalTime == 100)
+                            CurrentCustomer.RandomInterarrivalTime = 0;
                     }
                     else
                     {
@@ -168,7 +171,7 @@ namespace Task1
                         CurrentCustomer.InterarrivalTime = -1;
                         CurrentCustomer.ArrivalTime = 0;
                     }
-                    CurrentCustomer.RandomServiceTime = Rnd.Next(100);
+                    CurrentCustomer.RandomServiceTime = Rnd.Next(1, 101);
                     Server FirstIdle = new Server();
                     FirstIdle.ServerEndTime = 100000;
                     int FirstIdleID = -1;
@@ -194,8 +197,10 @@ namespace Task1
 
                     CurrentCustomer.TimeServiceEnds = CurrentCustomer.TimeServiceBegins + CurrentCustomer.ServiceTime;
                     Servers[FirstIdleID].ServerEndTime = CurrentCustomer.TimeServiceEnds;
-                    if (Servers[FirstIdleID].ServerEndTime > SimulationEndTime)
+                    if (CurrentCustomer.TimeServiceEnds > SimulationEndTime)
                         break;
+                    if (CurrentCustomer.RandomServiceTime == 100)
+                        CurrentCustomer.RandomServiceTime = 0;
                     Customers.Add(CurrentCustomer);
                     i++;
                 }
@@ -206,16 +211,19 @@ namespace Task1
             {
                 int NoOfCustomers = Int32.Parse(TextBoxData);
                 int AssignedServer = -1;
+                Customers = new List<SimualtionCase>(NoOfCustomers);
                 for (int i = 0; i < NoOfCustomers; i++)
-                {   
-                    SimualtionCase new_sc = new SimualtionCase();
-                    Customers.Add(new_sc);
+                {
+                    SimualtionCase NewCustomer = new SimualtionCase();
+                    Customers.Add(NewCustomer);
                     Customers[i].CustomerNumber = i + 1;
                     if (i != 0)
                     {
-                        Customers[i].RandomInterarrivalTime = Rnd.Next(100);
+                        Customers[i].RandomInterarrivalTime = Rnd.Next(1, 101);
                         Customers[i].InterarrivalTime = this.GetInterarrivalTimeFromRange(Servers[0], Customers[i]);
                         Customers[i].ArrivalTime = Customers[i - 1].ArrivalTime + Customers[i].InterarrivalTime;
+                        if (Customers[i].RandomInterarrivalTime == 100)
+                            Customers[i].RandomInterarrivalTime = 0;
                     }
                     else
                     {
@@ -223,7 +231,7 @@ namespace Task1
                         Customers[i].InterarrivalTime = -1;
                         Customers[i].ArrivalTime = 0;
                     }
-                    Customers[i].RandomServiceTime = Rnd.Next(100);
+                    Customers[i].RandomServiceTime = Rnd.Next(1, 101);
                     this.FillFreeServers(Customers[i].ArrivalTime);
                     if (FreeServers.Count > 0)
                     {
@@ -257,6 +265,8 @@ namespace Task1
                     Customers[i].ServiceTime = this.GetServiceTimeFromRange(Customers[i].AssignedServer, Customers[i]);
                     Customers[i].TimeServiceEnds = Customers[i].TimeServiceBegins + Customers[i].ServiceTime;
                     Servers[AssignedServer].ServerEndTime = Customers[i].TimeServiceEnds;
+                    if (Customers[i].RandomServiceTime == 100)
+                        Customers[i].RandomServiceTime = 0;
                 }
                 return Customers;
             }
@@ -264,7 +274,7 @@ namespace Task1
             else if (SelectionMethod == Enums.ServerSelectionMethod.Random && StoppingCondition == Enums.ServerStoppingCondition.SimulationEndTime)
             {
                 int AssignedServer = -1;
-                
+
                 int SimulationEndTime = Int32.Parse(TextBoxData.ToString()), i = 0;
                 while (true)
                 {
@@ -272,9 +282,11 @@ namespace Task1
                     CurrentCustomer.CustomerNumber = i + 1;
                     if (i != 0)
                     {
-                        CurrentCustomer.RandomInterarrivalTime = Rnd.Next(100);
+                        CurrentCustomer.RandomInterarrivalTime = Rnd.Next(1, 101);
                         CurrentCustomer.InterarrivalTime = this.GetInterarrivalTimeFromRange(Servers[0], CurrentCustomer);
                         CurrentCustomer.ArrivalTime = Customers[i - 1].ArrivalTime + CurrentCustomer.InterarrivalTime;
+                        if (CurrentCustomer.RandomInterarrivalTime == 100)
+                            CurrentCustomer.RandomInterarrivalTime = 0;
                     }
                     else
                     {
@@ -282,7 +294,7 @@ namespace Task1
                         CurrentCustomer.InterarrivalTime = -1;
                         CurrentCustomer.ArrivalTime = 0;
                     }
-                    CurrentCustomer.RandomServiceTime = Rnd.Next(100);
+                    CurrentCustomer.RandomServiceTime = Rnd.Next(1, 101);
                     this.FillFreeServers(Customers[i].ArrivalTime);
                     if (FreeServers.Count > 0)
                     {
@@ -316,6 +328,10 @@ namespace Task1
                     CurrentCustomer.ServiceTime = this.GetServiceTimeFromRange(CurrentCustomer.AssignedServer, CurrentCustomer);
                     CurrentCustomer.TimeServiceEnds = CurrentCustomer.TimeServiceBegins + CurrentCustomer.ServiceTime;
                     Servers[AssignedServer].ServerEndTime = CurrentCustomer.TimeServiceEnds;
+                    if (CurrentCustomer.TimeServiceEnds > SimulationEndTime)
+                        break;
+                    if (CurrentCustomer.RandomServiceTime == 100)
+                        CurrentCustomer.RandomServiceTime = 0;
                     Customers.Add(CurrentCustomer);
                 }
                 return Customers;
