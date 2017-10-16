@@ -36,4 +36,21 @@ C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.Form1.resources
 C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.Properties.Resources.resources
 C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.csproj.GenerateResource.Cache
 C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.statform.resources
+<<<<<<< Updated upstream
 C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.graphform.resources
+=======
+F:\Git WorkSpace\simulation_task1\Task1\bin\Debug\Task1.exe.config
+F:\Git WorkSpace\simulation_task1\Task1\bin\Debug\Task1.exe
+F:\Git WorkSpace\simulation_task1\Task1\bin\Debug\Task1.pdb
+F:\Git WorkSpace\simulation_task1\Task1\bin\Debug\MultiChannelQueueModels.dll
+F:\Git WorkSpace\simulation_task1\Task1\bin\Debug\MultiChannelQueueModels.pdb
+F:\Git WorkSpace\simulation_task1\Task1\obj\Debug\Task1.csprojResolveAssemblyReference.cache
+F:\Git WorkSpace\simulation_task1\Task1\obj\Debug\Task1.Form1.resources
+F:\Git WorkSpace\simulation_task1\Task1\obj\Debug\Task1.Properties.Resources.resources
+F:\Git WorkSpace\simulation_task1\Task1\obj\Debug\Task1.statform.resources
+F:\Git WorkSpace\simulation_task1\Task1\obj\Debug\Task1.csproj.GenerateResource.Cache
+F:\Git WorkSpace\simulation_task1\Task1\obj\Debug\Task1.csproj.CoreCompileInputs.cache
+F:\Git WorkSpace\simulation_task1\Task1\obj\Debug\Task1.exe
+F:\Git WorkSpace\simulation_task1\Task1\obj\Debug\Task1.pdb
+>>>>>>> Stashed changes
+F:\Git WorkSpace\simulation_task1\Task1\obj\Debug\Task1.graphform.resources

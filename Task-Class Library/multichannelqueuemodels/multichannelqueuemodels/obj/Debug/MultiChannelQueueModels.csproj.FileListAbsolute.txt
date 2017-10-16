@@ -1,0 +1,12 @@
+C:\Users\admin\Dropbox\My Files\MultiChannelQueueModels\MultiChannelQueueModels\bin\Debug\MultiChannelQueueModels.dll
+C:\Users\admin\Dropbox\My Files\MultiChannelQueueModels\MultiChannelQueueModels\bin\Debug\MultiChannelQueueModels.pdb
+C:\Users\admin\Dropbox\My Files\MultiChannelQueueModels\MultiChannelQueueModels\obj\Debug\MultiChannelQueueModels.csproj.CoreCompileInputs.cache
+C:\Users\admin\Dropbox\My Files\MultiChannelQueueModels\MultiChannelQueueModels\obj\Debug\MultiChannelQueueModels.dll
+C:\Users\admin\Dropbox\My Files\MultiChannelQueueModels\MultiChannelQueueModels\obj\Debug\MultiChannelQueueModels.pdb
+C:\Users\admin\Dropbox\My Files\MultiChannelQueueModels\MultiChannelQueueModels\obj\Debug\MultiChannelQueueModels.csprojResolveAssemblyReference.cache
+C:\Users\admin\Dropbox\Simulation 2017-2018\2017-2018 Material\Lab 2\Task-Class Library\MultiChannelQueueModels\MultiChannelQueueModels\bin\Debug\MultiChannelQueueModels.dll
+C:\Users\admin\Dropbox\Simulation 2017-2018\2017-2018 Material\Lab 2\Task-Class Library\MultiChannelQueueModels\MultiChannelQueueModels\bin\Debug\MultiChannelQueueModels.pdb
+C:\Users\admin\Dropbox\Simulation 2017-2018\2017-2018 Material\Lab 2\Task-Class Library\MultiChannelQueueModels\MultiChannelQueueModels\obj\Debug\MultiChannelQueueModels.csprojResolveAssemblyReference.cache
+C:\Users\admin\Dropbox\Simulation 2017-2018\2017-2018 Material\Lab 2\Task-Class Library\MultiChannelQueueModels\MultiChannelQueueModels\obj\Debug\MultiChannelQueueModels.csproj.CoreCompileInputs.cache
+C:\Users\admin\Dropbox\Simulation 2017-2018\2017-2018 Material\Lab 2\Task-Class Library\MultiChannelQueueModels\MultiChannelQueueModels\obj\Debug\MultiChannelQueueModels.dll
+C:\Users\admin\Dropbox\Simulation 2017-2018\2017-2018 Material\Lab 2\Task-Class Library\MultiChannelQueueModels\MultiChannelQueueModels\obj\Debug\MultiChannelQueueModels.pdb

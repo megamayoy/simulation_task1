@@ -15,13 +15,7 @@ namespace Task1
     {
         int NoServers = 0;
         SimulationSystem SimSystem;
-        float prob_of_cust_wait = 0;
-        float AVG_wait_time = 0;
-        int MAX_Q_len = 0;
-        int total_customers_waiting_time = 0;
-        int num_of_waited_customers = 0;
-        int total_runtime = 0;
-        int total_customers = 0;
+        Statistics SystemStatistics = new Statistics();
 
         public Form1()
         {
@@ -36,11 +30,18 @@ namespace Task1
             InputGrdView.Rows.Clear();
             OutputGrdView.DataSource = null;
             OutputGrdView.Rows.Clear();
+            PriorityRadioBtn.Checked = false;
+            RandomRadioBtn.Checked = false;
+            LeastUtiRadioBtn.Checked = false;
+            MaxNoRadioBtn.Checked = false;
+            MaxNoTxtbox.Visible = false;
+            SimEndTimeRadioBtn.Checked = false;
+            SimTimeTxtbox.Visible = false;
 
             //get number of servers 
-            NoServers = Int32.Parse(NoServersTxt.Text)+1;//that plus one added because we store the interarrival time dis in server[0]
+            NoServers = Int32.Parse(NoServersTxt.Text) + 1;//that plus one added because we store the interarrival time dis in server[0]
             // 2 columns for the interarrival time distribution and 2 columns for each server's service time distribution(service time and probability columns)  
-            int NoCols = 2 * NoServers ;
+            int NoCols = 2 * NoServers;
             InputGrdView.ColumnCount = NoCols;
             InputGrdView.Columns[0].HeaderText = "InterArrival Time";
             InputGrdView.Columns[1].HeaderText = "Probabilty";
@@ -51,7 +52,7 @@ namespace Task1
                 InputGrdView.Columns[i + 1].HeaderText = "Probabilty";
                 ServerNo++;
             }
-           
+
         }
 
         //loading input into each server's service time dist table and interarrival time dist table 
@@ -81,7 +82,7 @@ namespace Task1
             }
 
             SimSystem.CompleteServiceTimeDistributionData(NoServers, InputGrdView.RowCount, Servers);
-            
+
             Enums.ServerSelectionMethod SelectionMethod = new Enums.ServerSelectionMethod();
             Enums.ServerStoppingCondition StoppingCondition = new Enums.ServerStoppingCondition();
             if (PriorityRadioBtn.Checked)
@@ -101,8 +102,8 @@ namespace Task1
             if (MaxNoRadioBtn.Checked)
             {
                 StoppingCondition = Enums.ServerStoppingCondition.NumberOfCustomers;
-               List<SimualtionCase> result= SimSystem.Simulate(SelectionMethod, StoppingCondition, MaxNoTxtbox.Text);
-               show_results(result);
+                List<SimualtionCase> result = SimSystem.Simulate(SelectionMethod, StoppingCondition, MaxNoTxtbox.Text);
+                show_results(result);
             }
             else if (SimEndTimeRadioBtn.Checked)
             {
@@ -139,152 +140,71 @@ namespace Task1
             dt.Columns.Add("ServerNo");
             dt.Columns.Add("Time In Queue");
 
-
-            NoServers = Int32.Parse(NoServersTxt.Text) + 1;
-            List<int> servtime_per_server = new List<int>();
-            List<int> custnum_per_server = new List<int>();
-            //total runtime = time service end of the last customer
-            
-            total_runtime = Customers[Customers.Count - 1].TimeServiceEnds;
-
-            List<int> queue_length = new List<int>();
-            //initializing the queue_length at time 0 to total runtime units
-
-            for (int i = 0; i <= total_runtime; i++)
-            {
-                queue_length.Add(0);
-               
-            }
-            //initialize service time per server & customers number per server with zero
-            for (int d = 0; d < NoServers; d++)
-            {
-                servtime_per_server.Add(0);
-                custnum_per_server.Add(0);
-            }
-
-
-
-            total_customers = Customers.Count;
             for (int i = 0; i < Customers.Count; i++)
             {
-            
+
                 DataRow dr = dt.NewRow();
                 dr["CustomerNo"] = Customers[i].CustomerNumber;
                 dr["Random Digit For Interarrival"] = Customers[i].RandomInterarrivalTime;
                 dr["Time Between Arrival"] = Customers[i].InterarrivalTime;
-                dr["Clock Time Of Arrival"]=Customers[i].ArrivalTime;
+                dr["Clock Time Of Arrival"] = Customers[i].ArrivalTime;
                 dr["Random Digit For Service"] = Customers[i].RandomServiceTime;
                 dr["Time Service Begin"] = Customers[i].TimeServiceBegins;
                 dr["Service Time"] = Customers[i].ServiceTime;
                 dr["Time Service End"] = Customers[i].TimeServiceEnds;
                 dr["ServerNo"] = Customers[i].AssignedServer.ServerId;
-                //calculate total service time per server & num of customers assigned to each server
-                servtime_per_server[Customers[i].AssignedServer.ServerId] += Customers[i].ServiceTime;
-                custnum_per_server[Customers[i].AssignedServer.ServerId]++;
-
-
                 dr["Time In Queue"] = Customers[i].WaitingTime;
-                //calculate num of waited customers & total waiting time
-                if(Customers[i].WaitingTime > 0)
-                {
-                    num_of_waited_customers++;
-                }
-                total_customers_waiting_time += Customers[i].WaitingTime;
-
-         //calculating length of queue during runtime  (if service begin > arrival time of customer then they waited in queue)
-                if (Customers[i].TimeServiceBegins > Customers[i].ArrivalTime)
-                {
-                    int waiting_units = Customers[i].TimeServiceBegins - Customers[i].ArrivalTime;
-
-                    for (int y = Customers[i].ArrivalTime; y <= (Customers[i].ArrivalTime + waiting_units)-1; y++)
-                    {
-                        queue_length[y] = queue_length[y] + 1;
-                    }
-                }
-
-
                 dt.Rows.Add(dr);
             }
             OutputGrdView.DataSource = dt;
 
-            Console.WriteLine("");
-            for (int j = 1; j < NoServers; j++)
-            {
-                if (custnum_per_server[j] == 0)
-                {
-                    Console.WriteLine("average service time of server " + j.ToString() + " = " + 0);
-                }
-                else
-                Console.WriteLine("average service time of server " + j.ToString() + " = " + (float)servtime_per_server[j] / custnum_per_server[j]);
+            /*     Console.WriteLine("");
+                 for (int j = 1; j < NoServers; j++)
+                 {
+                     if (custnum_per_server[j] == 0)
+                     {
+                         Console.WriteLine("average service time of server " + j.ToString() + " = " + 0);
+                     }
+                     else
+                     Console.WriteLine("average service time of server " + j.ToString() + " = " + (float)servtime_per_server[j] / custnum_per_server[j]);
 
-                Console.WriteLine("utilization of server " + j.ToString() + " = " + (float)servtime_per_server[j] / total_runtime);
+                     Console.WriteLine("utilization of server " + j.ToString() + " = " + (float)servtime_per_server[j] / total_runtime);
 
-            }
-
-
-            prob_of_cust_wait = (float)num_of_waited_customers/ Customers.Count;
-            
-
-            if (num_of_waited_customers == 0)
-            {
-                AVG_wait_time = 0;
-            }
-            else
-            AVG_wait_time = (float)total_customers_waiting_time/num_of_waited_customers;
-
-           
-                MAX_Q_len = queue_length.Max();
-            
-
-            
+                 }
+                 */
         }
 
         private void statbutton_Click(object sender, EventArgs e)
         {
             statform new_stat = new statform();
-            new_stat.richTextBox1.Text += "ToTal Simulation Time = " + total_runtime.ToString() + "\n";
-            new_stat.richTextBox1.Text += "Total Number OF Customers = " + total_customers.ToString() + "\n";
-            new_stat.richTextBox1.Text += "Number Of Waited Customers = " + total_customers_waiting_time.ToString() + "\n";
-            new_stat.richTextBox1.Text += "Probability Of A Customer Wait in Queue = " + prob_of_cust_wait.ToString() + "\n";
-            new_stat.richTextBox1.Text += "Average Waiting Time In Queue = " + AVG_wait_time.ToString() + "\n";
-            new_stat.richTextBox1.Text += "Max Queue Length = " + MAX_Q_len.ToString() + "\n";          
-            new_stat.richTextBox1.Text += "Total Customers Waiting Time = " + total_customers_waiting_time.ToString() + "\n";
-            
-            
-            
+            SystemStatistics = SimSystem.ComputeSystemStatistics();
+            new_stat.richTextBox1.Text += "ToTal Simulation Time = " + SystemStatistics.TotalRunTime.ToString() + "\n";
+            new_stat.richTextBox1.Text += "Total Number OF Customers = " + SystemStatistics.TotalCustomers.ToString() + "\n";
+            new_stat.richTextBox1.Text += "Number Of Waited Customers = " + SystemStatistics.TotalWaitingTime.ToString() + "\n";
+            new_stat.richTextBox1.Text += "Probability Of A Customer Wait in Queue = " + SystemStatistics.ProbabilityOfCustomerWait.ToString() + "\n";
+            new_stat.richTextBox1.Text += "Average Waiting Time In Queue = " + SystemStatistics.AverageWaitTime.ToString() + "\n";
+            new_stat.richTextBox1.Text += "Max Queue Length = " + SystemStatistics.MaximumQueueLength.ToString() + "\n";
+            new_stat.richTextBox1.Text += "Total Customers Waiting Time = " + SystemStatistics.TotalWaitingTime.ToString() + "\n";
             new_stat.Show();
 
         }
-
         private void showgraph_btn_Click(object sender, EventArgs e)
         {
-
             List<List<int>> graph_data = SimSystem.graph_data();
-
             //iterate on each server and get its busy unit times
             for (int i = 1; i < graph_data.Count; i++)
             {
-                  //create graph for each server
+                //create graph for each server
                 graphform g = new graphform();
                 g.graph.ChartAreas[0].AxisX.Interval = 1;
-                for(int y = 0 ; y<graph_data[i].Count;y++)
+                for (int y = 0; y < graph_data[i].Count; y++)
                 {
                     int busy = graph_data[i][y];
-                    g.graph.Series["status"].Points.AddXY(busy,1);
+                    g.graph.Series["status"].Points.AddXY(busy, 1);
                 }
                 g.Text = "Server " + i.ToString();
                 g.Show();
-            
             }
-
-
         }
-
-     
-
-  
-       
-
     }
-
 }

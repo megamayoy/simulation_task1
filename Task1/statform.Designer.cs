@@ -38,6 +38,7 @@
             this.richTextBox1.Size = new System.Drawing.Size(453, 161);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
+//            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // statform
             // 
@@ -46,7 +47,7 @@
             this.ClientSize = new System.Drawing.Size(477, 261);
             this.Controls.Add(this.richTextBox1);
             this.Name = "statform";
-            this.Text = "statform";
+            this.Text = "System Statistics";
             this.ResumeLayout(false);
 
         }

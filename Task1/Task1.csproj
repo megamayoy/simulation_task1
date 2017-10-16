@@ -67,6 +67,7 @@
     <Compile Include="statform.Designer.cs">
       <DependentUpon>statform.cs</DependentUpon>
     </Compile>
+    <Compile Include="Statistics.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -99,7 +100,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="F:\studying\year4\simulation\multichannelqueuemodels\multichannelqueuemodels\MultiChannelQueueModels.csproj">
+    <ProjectReference Include="..\..\..\FCIS\Year 4\Semester 1\Simulation\Labs\Practical\Task-Class Library\multichannelqueuemodels\multichannelqueuemodels\MultiChannelQueueModels.csproj">
       <Project>{30d68d92-28bd-4b28-bc96-74cc13dbef31}</Project>
       <Name>MultiChannelQueueModels</Name>
     </ProjectReference>

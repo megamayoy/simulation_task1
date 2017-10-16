@@ -194,11 +194,11 @@
             // 
             // statbutton
             // 
-            this.statbutton.Location = new System.Drawing.Point(31, 320);
+            this.statbutton.Location = new System.Drawing.Point(31, 310);
             this.statbutton.Name = "statbutton";
-            this.statbutton.Size = new System.Drawing.Size(85, 29);
+            this.statbutton.Size = new System.Drawing.Size(104, 42);
             this.statbutton.TabIndex = 15;
-            this.statbutton.Text = "Show Stats";
+            this.statbutton.Text = "Show System Statistics ";
             this.statbutton.UseVisualStyleBackColor = true;
             this.statbutton.Click += new System.EventHandler(this.statbutton_Click);
             // 
