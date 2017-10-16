@@ -27,3 +27,11 @@ C:\Users\mega_may\Documents\Visual Studio 2012\Projects\simulation_task1\Task1\b
 C:\Users\mega_may\Desktop\simulation_task1\Task1\bin\Debug\Task1.exe.config
 C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.exe
 C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.pdb
+C:\Users\mega_may\Desktop\simulation_task1\Task1\bin\Debug\Task1.exe
+C:\Users\mega_may\Desktop\simulation_task1\Task1\bin\Debug\Task1.pdb
+C:\Users\mega_may\Desktop\simulation_task1\Task1\bin\Debug\MultiChannelQueueModels.dll
+C:\Users\mega_may\Desktop\simulation_task1\Task1\bin\Debug\MultiChannelQueueModels.pdb
+C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.csprojResolveAssemblyReference.cache
+C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.Form1.resources
+C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.Properties.Resources.resources
+C:\Users\mega_may\Desktop\simulation_task1\Task1\obj\Debug\Task1.csproj.GenerateResource.Cache

@@ -132,8 +132,30 @@ namespace Task1
             dt.Columns.Add("ServerNo");
             dt.Columns.Add("Time In Queue");
 
+
+            NoServers = Int32.Parse(NoServersTxt.Text) + 1;
+            List<int> servtime_per_server = new List<int>(NoServers);
+            List<int> custnum_per_server = new List<int>(NoServers);
+            int total_runtime = 0;
+
+
+            //initialize service time per server & customers number per server with zero
+            for (int d = 0; d < NoServers; d++)
+            {   
+                
+                servtime_per_server.Add(0);
+                custnum_per_server.Add(0);
+
+                
+            }
+
+            int total_customers_waiting_time = 0;
+            int num_of_waited_customers = 0;
+
+
             for (int i = 0; i < Customers.Count; i++)
             {
+            
                 DataRow dr = dt.NewRow();
                 dr["CustomerNo"] = Customers[i].CustomerNumber;
                 dr["Random Digit For Interarrival"] = Customers[i].RandomInterarrivalTime;
@@ -144,11 +166,45 @@ namespace Task1
                 dr["Service Time"] = Customers[i].ServiceTime;
                 dr["Time Service End"] = Customers[i].TimeServiceEnds;
                 dr["ServerNo"] = Customers[i].AssignedServer.ServerId;
+                //calculate total service time per server & num of customers assigned to each server
+                servtime_per_server[Customers[i].AssignedServer.ServerId] += Customers[i].ServiceTime;
+                custnum_per_server[Customers[i].AssignedServer.ServerId]++;
+
+
                 dr["Time In Queue"] = Customers[i].WaitingTime;
-                dt.Rows.Add(dr);
+                //calculate num of waited customers & total waiting time
+                if(Customers[i].WaitingTime > 0)
+                {
+                    num_of_waited_customers++;
+                }
+                total_customers_waiting_time += Customers[i].WaitingTime;
+
+                //total runtime = time service end of the last customer
+                if (i == Customers.Count - 1)
+                {
+                    total_runtime = Customers[i].TimeServiceEnds;
                 
+                }
+
+                dt.Rows.Add(dr);
             }
             OutputGrdView.DataSource = dt;
+
+            Console.WriteLine("");
+            for (int j = 1; j < NoServers; j++)
+            {
+                Console.WriteLine("average service time of server " + j.ToString() + " = " + (float)servtime_per_server[j] / custnum_per_server[j]);
+
+                Console.WriteLine("utilization of server " + j.ToString() + " = " + (float)servtime_per_server[j] / total_runtime);
+
+            }
+
+            Console.WriteLine("Probability of a customer wait in queue = "+ (float)num_of_waited_customers/Customers.Count);
+            Console.WriteLine("Average waiting time in queue = "+ (float)total_customers_waiting_time/num_of_waited_customers);
+
+
+
+            
 
             
         }
