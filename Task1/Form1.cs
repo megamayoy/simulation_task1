@@ -186,6 +186,11 @@ namespace Task1
             Console.WriteLine("");
             for (int j = 1; j < NoServers; j++)
             {
+                if (custnum_per_server[j] == 0)
+                {
+                    Console.WriteLine("average service time of server " + j.ToString() + " = " + 0);
+                }
+                else
                 Console.WriteLine("average service time of server " + j.ToString() + " = " + (float)servtime_per_server[j] / custnum_per_server[j]);
 
                 Console.WriteLine("utilization of server " + j.ToString() + " = " + (float)servtime_per_server[j] / total_runtime);
@@ -193,6 +198,12 @@ namespace Task1
             }
 
             Console.WriteLine("Probability of a customer wait in queue = "+ (float)num_of_waited_customers/Customers.Count);
+
+            if (num_of_waited_customers == 0)
+            {
+                Console.WriteLine("Average waiting time in queue = " + 0);
+            }
+            else
             Console.WriteLine("Average waiting time in queue = "+ (float)total_customers_waiting_time/num_of_waited_customers);
 
 
