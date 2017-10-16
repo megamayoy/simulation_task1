@@ -43,6 +43,7 @@
             this.SimTimeTxtbox = new System.Windows.Forms.TextBox();
             this.SimBtn = new System.Windows.Forms.Button();
             this.GetinputBtn = new System.Windows.Forms.Button();
+            this.statbutton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.InputGrdView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OutputGrdView)).BeginInit();
             this.SuspendLayout();
@@ -190,11 +191,22 @@
             this.GetinputBtn.UseVisualStyleBackColor = true;
             this.GetinputBtn.Click += new System.EventHandler(this.GetinputBtn_Click);
             // 
+            // statbutton
+            // 
+            this.statbutton.Location = new System.Drawing.Point(31, 320);
+            this.statbutton.Name = "statbutton";
+            this.statbutton.Size = new System.Drawing.Size(85, 29);
+            this.statbutton.TabIndex = 15;
+            this.statbutton.Text = "Show Stats";
+            this.statbutton.UseVisualStyleBackColor = true;
+            this.statbutton.Click += new System.EventHandler(this.statbutton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1240, 691);
+            this.Controls.Add(this.statbutton);
             this.Controls.Add(this.GetinputBtn);
             this.Controls.Add(this.SimBtn);
             this.Controls.Add(this.SimTimeTxtbox);
@@ -236,6 +248,7 @@
         private System.Windows.Forms.TextBox SimTimeTxtbox;
         private System.Windows.Forms.Button SimBtn;
         private System.Windows.Forms.Button GetinputBtn;
+        private System.Windows.Forms.Button statbutton;
     }
 }
 

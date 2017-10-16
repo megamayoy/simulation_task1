@@ -15,6 +15,9 @@ namespace Task1
     {
         int NoServers = 0;
         SimulationSystem SimSystem;
+        float prob_of_cust_wait = 0;
+        float AVG_wait_time = 0;
+        int MAX_Q_len = 0;
         public Form1()
         {
             InitializeComponent();
@@ -23,7 +26,10 @@ namespace Task1
 
         // dynamically generate tables columns based on the number of servers 
         private void GetinputBtn_Click(object sender, EventArgs e)
-        {  //get number of servers 
+        {
+            InputGrdView.DataSource = null;
+            this.InputGrdView.Rows.Clear();
+            //get number of servers 
             NoServers = Int32.Parse(NoServersTxt.Text)+1;//that plus one added because we store the interarrival time dis in server[0]
             // 2 columns for the interarrival time distribution and 2 columns for each server's service time distribution(service time and probability columns)  
             int NoCols = 2 * NoServers ;
@@ -37,7 +43,7 @@ namespace Task1
                 InputGrdView.Columns[i + 1].HeaderText = "Probabilty";
                 ServerNo++;
             }
-
+           
         }
 
         //loading input into each server's service time dist table and interarrival time dist table 
@@ -207,24 +213,36 @@ namespace Task1
 
             }
 
-            Console.WriteLine("Probability of a customer wait in queue = "+ (float)num_of_waited_customers/Customers.Count);
+
+            prob_of_cust_wait = (float)num_of_waited_customers/ Customers.Count;
+            
 
             if (num_of_waited_customers == 0)
             {
-                Console.WriteLine("Average waiting time in queue = " + 0);
+                AVG_wait_time = 0;
             }
             else
-            Console.WriteLine("Average waiting time in queue = "+ (float)total_customers_waiting_time/num_of_waited_customers);
+            AVG_wait_time = (float)total_customers_waiting_time/num_of_waited_customers;
 
 
-            Console.WriteLine("Max Queue Length = " + queue_length.Max());
+            MAX_Q_len= queue_length.Max();
             
 
             
         }
 
-  
+        private void statbutton_Click(object sender, EventArgs e)
+        {
+            statform new_stat = new statform();
+            new_stat.richTextBox1.Text += "Probability of a customer wait in queue = " + prob_of_cust_wait.ToString() + "\n";
+            new_stat.richTextBox1.Text += "Average waiting time in queue = " + AVG_wait_time.ToString() + "\n";
+            new_stat.richTextBox1.Text += "Max Queue Length = " + MAX_Q_len.ToString() + "\n";
+            new_stat.ShowDialog();
 
+        }
+
+  
+       
 
     }
 
