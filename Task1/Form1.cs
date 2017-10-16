@@ -18,6 +18,11 @@ namespace Task1
         float prob_of_cust_wait = 0;
         float AVG_wait_time = 0;
         int MAX_Q_len = 0;
+        int total_customers_waiting_time = 0;
+        int num_of_waited_customers = 0;
+        int total_runtime = 0;
+        int total_customers = 0;
+
         public Form1()
         {
             InitializeComponent();
@@ -28,7 +33,10 @@ namespace Task1
         private void GetinputBtn_Click(object sender, EventArgs e)
         {
             InputGrdView.DataSource = null;
-            this.InputGrdView.Rows.Clear();
+            InputGrdView.Rows.Clear();
+            OutputGrdView.DataSource = null;
+            OutputGrdView.Rows.Clear();
+
             //get number of servers 
             NoServers = Int32.Parse(NoServersTxt.Text)+1;//that plus one added because we store the interarrival time dis in server[0]
             // 2 columns for the interarrival time distribution and 2 columns for each server's service time distribution(service time and probability columns)  
@@ -136,7 +144,7 @@ namespace Task1
             List<int> servtime_per_server = new List<int>();
             List<int> custnum_per_server = new List<int>();
             //total runtime = time service end of the last customer
-            int total_runtime = 0;
+            
             total_runtime = Customers[Customers.Count - 1].TimeServiceEnds;
 
             List<int> queue_length = new List<int>();
@@ -147,7 +155,6 @@ namespace Task1
                 queue_length.Add(0);
                
             }
-
             //initialize service time per server & customers number per server with zero
             for (int d = 0; d < NoServers; d++)
             {
@@ -155,10 +162,9 @@ namespace Task1
                 custnum_per_server.Add(0);
             }
 
-            int total_customers_waiting_time = 0;
-            int num_of_waited_customers = 0;
 
 
+            total_customers = Customers.Count;
             for (int i = 0; i < Customers.Count; i++)
             {
             
@@ -190,8 +196,10 @@ namespace Task1
                 {
                     int waiting_units = Customers[i].TimeServiceBegins - Customers[i].ArrivalTime;
 
-                    for (int y = Customers[i].ArrivalTime; y <= waiting_units; y++)
-                           queue_length[y]++;
+                    for (int y = Customers[i].ArrivalTime; y <= (Customers[i].ArrivalTime + waiting_units)-1; y++)
+                    {
+                        queue_length[y] = queue_length[y] + 1;
+                    }
                 }
 
 
@@ -224,8 +232,8 @@ namespace Task1
             else
             AVG_wait_time = (float)total_customers_waiting_time/num_of_waited_customers;
 
-
-            MAX_Q_len= queue_length.Max();
+           
+                MAX_Q_len = queue_length.Max();
             
 
             
@@ -234,10 +242,17 @@ namespace Task1
         private void statbutton_Click(object sender, EventArgs e)
         {
             statform new_stat = new statform();
-            new_stat.richTextBox1.Text += "Probability of a customer wait in queue = " + prob_of_cust_wait.ToString() + "\n";
-            new_stat.richTextBox1.Text += "Average waiting time in queue = " + AVG_wait_time.ToString() + "\n";
-            new_stat.richTextBox1.Text += "Max Queue Length = " + MAX_Q_len.ToString() + "\n";
-            new_stat.ShowDialog();
+            new_stat.richTextBox1.Text += "ToTal Simulation Time = " + total_runtime.ToString() + "\n";
+            new_stat.richTextBox1.Text += "Total Number OF Customers = " + total_customers.ToString() + "\n";
+            new_stat.richTextBox1.Text += "Number Of Waited Customers = " + total_customers_waiting_time.ToString() + "\n";
+            new_stat.richTextBox1.Text += "Probability Of A Customer Wait in Queue = " + prob_of_cust_wait.ToString() + "\n";
+            new_stat.richTextBox1.Text += "Average Waiting Time In Queue = " + AVG_wait_time.ToString() + "\n";
+            new_stat.richTextBox1.Text += "Max Queue Length = " + MAX_Q_len.ToString() + "\n";          
+            new_stat.richTextBox1.Text += "Total Customers Waiting Time = " + total_customers_waiting_time.ToString() + "\n";
+            
+            
+            
+            new_stat.Show();
 
         }
 
