@@ -66,11 +66,7 @@ namespace Task1
                 Cols += 2;
             }
 
-            
-
-            //calculate ranges and cumulative probability in service time distribution table of each server
             SimSystem.CompleteServiceTimeDistributionData(NoServers, InputGrdView.RowCount, Servers);
-          
             
             Enums.ServerSelectionMethod SelectionMethod = new Enums.ServerSelectionMethod();
             Enums.ServerStoppingCondition StoppingCondition = new Enums.ServerStoppingCondition();
@@ -117,9 +113,6 @@ namespace Task1
         //printing data to the result table
         void show_results(List<SimualtionCase> Customers)
         {
-
-           // MessageBox.Show("rows" + OutputGrdView.RowCount.ToString());
-
             DataTable dt = new DataTable();
             dt.Columns.Add("CustomerNo");
             dt.Columns.Add("Random Digit For Interarrival");
