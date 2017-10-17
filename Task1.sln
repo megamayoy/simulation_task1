@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.15
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1", "Task1\Task1.csproj", "{27C7ACE5-16CB-49B5-B29C-9BFE2D4721C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiChannelQueueModels", "..\..\FCIS\Year 4\Semester 1\Simulation\Labs\Practical\Task-Class Library\multichannelqueuemodels\multichannelqueuemodels\MultiChannelQueueModels.csproj", "{30D68D92-28BD-4B28-BC96-74CC13DBEF31}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiChannelQueueModels", "Task-Class Library\multichannelqueuemodels\multichannelqueuemodels\MultiChannelQueueModels.csproj", "{30D68D92-28BD-4B28-BC96-74CC13DBEF31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

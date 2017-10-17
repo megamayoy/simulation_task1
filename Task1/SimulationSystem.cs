@@ -386,14 +386,23 @@ namespace Task1
             SystemStatistics.MaximumQueueLength = SystemStatistics.QueueLength.Max();
             return SystemStatistics;
         }
-        public List<List<int>> graph_data()
+        public List<List<int>> graph_data(out List<int> servtime_per_server, out List<int> custnum_per_server,out int total_runtime)
         {
+             servtime_per_server = new List<int>();
+             custnum_per_server = new List<int>();
             List<List<int>> data = new List<List<int>>();
+
+
             //initializing the graph data list so that it contains lists equal to the number of servers 
+            //initialize service time per server & customers number per server with zero
             for (int y = 1; y <= NoServers; y++)
             {
                 data.Add(new List<int>());
+                servtime_per_server.Add(0);
+                custnum_per_server.Add(0);
             }
+
+           total_runtime = Customers[Customers.Count - 1].TimeServiceEnds;
 
             for (int i = 0; i < Customers.Count; i++)
             {
@@ -407,6 +416,9 @@ namespace Task1
                 {
                     data[server_id].Add(j);
                 }
+
+                servtime_per_server[Customers[i].AssignedServer.ServerId] += Customers[i].ServiceTime;
+                custnum_per_server[Customers[i].AssignedServer.ServerId]++;
             }
             return data;
         }

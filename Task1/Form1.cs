@@ -158,20 +158,6 @@ namespace Task1
             }
             OutputGrdView.DataSource = dt;
 
-            /*     Console.WriteLine("");
-                 for (int j = 1; j < NoServers; j++)
-                 {
-                     if (custnum_per_server[j] == 0)
-                     {
-                         Console.WriteLine("average service time of server " + j.ToString() + " = " + 0);
-                     }
-                     else
-                     Console.WriteLine("average service time of server " + j.ToString() + " = " + (float)servtime_per_server[j] / custnum_per_server[j]);
-
-                     Console.WriteLine("utilization of server " + j.ToString() + " = " + (float)servtime_per_server[j] / total_runtime);
-
-                 }
-                 */
         }
 
         private void statbutton_Click(object sender, EventArgs e)
@@ -189,8 +175,12 @@ namespace Task1
 
         }
         private void showgraph_btn_Click(object sender, EventArgs e)
-        {
-            List<List<int>> graph_data = SimSystem.graph_data();
+        {   
+
+             List<int> servtime_per_server;
+             List<int> custnum_per_server;
+             int total_runtime;
+            List<List<int>> graph_data = SimSystem.graph_data(out servtime_per_server ,out custnum_per_server,out total_runtime );
             //iterate on each server and get its busy unit times
             for (int i = 1; i < graph_data.Count; i++)
             {
@@ -203,6 +193,12 @@ namespace Task1
                     g.graph.Series["status"].Points.AddXY(busy, 1);
                 }
                 g.Text = "Server " + i.ToString();
+                float AVG = (float)servtime_per_server[i] / custnum_per_server[i];
+                float Utilization = (float)servtime_per_server[i] / total_runtime;
+                g.server_stat.Text += "service time of server " + "= " + servtime_per_server[i].ToString() + "\n";
+                g.server_stat.Text += "customer number of server " + "= " + custnum_per_server[i].ToString() + "\n";
+                g.server_stat.Text += "average service time of server " + "= " + AVG.ToString() + "\n";
+                g.server_stat.Text +="utilization of server " +"= " + Utilization.ToString()+ "\n" ;
                 g.Show();
             }
         }
