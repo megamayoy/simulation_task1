@@ -358,12 +358,153 @@ namespace Task1
             }
             else if (SelectionMethod == Enums.ServerSelectionMethod.LowestUtilization && StoppingCondition == Enums.ServerStoppingCondition.NumberOfCustomers)
             {
-                return new List<SimualtionCase>();
+               
+                int NoOfCustomers = Int32.Parse(TextBoxData.ToString());
+                Customers = new List<SimualtionCase>(NoOfCustomers);
+                for (int i = 0; i < NoOfCustomers; i++)
+                {
+                    SimualtionCase NewCustomer = new SimualtionCase();
+                    Customers.Add(NewCustomer);
+                    Customers[i].CustomerNumber = i + 1;
+                    if (i != 0)
+                    {
+                        Customers[i].RandomInterarrivalTime = Rnd.Next(1, 101);
+                        Customers[i].InterarrivalTime = this.GetInterarrivalTimeFromRange(Servers[0], Customers[i]);
+                        if (Customers[i].RandomInterarrivalTime == 100)
+                            Customers[i].RandomInterarrivalTime = 0;
+
+                        SystemStatistics.AppendNewUnitTimes(Customers[i].InterarrivalTime);
+                        Customers[i].ArrivalTime = Customers[i - 1].ArrivalTime + Customers[i].InterarrivalTime;
+                    }
+                    else
+                    {
+                        Customers[i].RandomInterarrivalTime = -1;
+                        Customers[i].InterarrivalTime = -1;
+                        Customers[i].ArrivalTime = 0;
+                        SystemStatistics.AppendNewUnitTimes(1);
+                    }
+                    Customers[i].RandomServiceTime = Rnd.Next(1, 101);
+                    Server FirstIdle = new Server();
+                    FirstIdle.ServerEndTime = 100000;
+                    int FirstIdleID = -1;
+                    float utilization = 3;
+                    bool free_found = false;
+                    
+
+                    for (int q = 1; q < NoServers; q++)
+                    {   //get the first idle server in order
+
+                        float server_utilization = Servers[q].TotalServiceTime / Customers[i - 1].TimeServiceEnds;
+                       // if server is free and least utilization , update global utiization 
+                        if (Servers[q].ServerEndTime <= Customers[i].ArrivalTime && (server_utilization < utilization))
+                        {  
+                            FirstIdle = Servers[q];
+                            FirstIdleID = q;
+                            utilization = server_utilization;
+                            free_found = true;
+                        }
+                        //if that current server end time is greater that customers arrival time, pick the one that will finish early
+                        else if (Servers[q].ServerEndTime < FirstIdle.ServerEndTime && free_found == false)
+                        {
+                            FirstIdle = Servers[q];
+                            FirstIdleID = q;
+                        }
+                    }
+                    // if all servers are busy and customer has to wait then calculate wait time
+                    
+                    if (Servers[FirstIdleID].ServerEndTime > Customers[i].ArrivalTime)
+                    {
+                        Customers[i].WaitingTime = (Servers[FirstIdleID].ServerEndTime - Customers[i].ArrivalTime);
+                        SystemStatistics.NoOfCustomersWait++;
+                        SystemStatistics.TotalWaitingTime += Customers[i].WaitingTime;
+                        for (int x = Customers[i].ArrivalTime; x < Servers[FirstIdleID].ServerEndTime; x++)
+                            SystemStatistics.QueueLength[x]++;
+                    }
+                    Customers[i].AssignedServer = Servers[FirstIdleID];
+                    Customers[i].TimeServiceBegins = Customers[i].ArrivalTime + Customers[i].WaitingTime;
+                    Customers[i].ServiceTime = this.GetServiceTimeFromRange(Customers[i].AssignedServer, Customers[i]);
+                    Customers[i].TimeServiceEnds = Customers[i].TimeServiceBegins + Customers[i].ServiceTime;
+                    Servers[FirstIdleID].TotalServiceTime += Customers[i].ServiceTime;
+                    Servers[FirstIdleID].TotalNumberOfCustomers++;
+                    Servers[FirstIdleID].ServerEndTime = Customers[i].TimeServiceEnds;
+                    if (Customers[i].RandomServiceTime == 100)
+                        Customers[i].RandomServiceTime = 0;
+                }
+                return Customers;
             }
 
             else if (SelectionMethod == Enums.ServerSelectionMethod.LowestUtilization && StoppingCondition == Enums.ServerStoppingCondition.SimulationEndTime)
             {
-                return new List<SimualtionCase>();
+                int SimulationEndTime = Int32.Parse(TextBoxData), i = 0;
+                SystemStatistics.InitializeQueueLength(SimulationEndTime);
+                while (true)
+                {
+                    SimualtionCase CurrentCustomer = new SimualtionCase();
+                    CurrentCustomer.CustomerNumber = i + 1;
+                    if (i != 0)
+                    {
+                        CurrentCustomer.RandomInterarrivalTime = Rnd.Next(1, 101);
+                        CurrentCustomer.InterarrivalTime = this.GetInterarrivalTimeFromRange(Servers[0], CurrentCustomer);
+                        CurrentCustomer.ArrivalTime = Customers[i - 1].ArrivalTime + CurrentCustomer.InterarrivalTime;
+                        if (CurrentCustomer.RandomInterarrivalTime == 100)
+                            CurrentCustomer.RandomInterarrivalTime = 0;
+                    }
+                    else
+                    {
+                        CurrentCustomer.RandomInterarrivalTime = -1;
+                        CurrentCustomer.InterarrivalTime = -1;
+                        CurrentCustomer.ArrivalTime = 0;
+                    }
+                    CurrentCustomer.RandomServiceTime = Rnd.Next(1, 101);
+                    Server FirstIdle = new Server();
+                    FirstIdle.ServerEndTime = 100000;
+                    int FirstIdleID = -1;
+                    float utilization = 3;
+                    bool free_found = false;
+
+
+                    for (int q = 1; q < NoServers; q++)
+                    {   //get the first idle server in order
+
+                        float server_utilization = Servers[q].TotalServiceTime / Customers[i - 1].TimeServiceEnds;
+                        // if server is free and least utilization , update global utiization 
+                        if (Servers[q].ServerEndTime <= Customers[i].ArrivalTime && (server_utilization < utilization))
+                        {
+                            FirstIdle = Servers[q];
+                            FirstIdleID = q;
+                            utilization = server_utilization;
+                            free_found = true;
+                        }
+                        else if (Servers[q].ServerEndTime < FirstIdle.ServerEndTime && free_found == false)
+                        {
+                            FirstIdle = Servers[q];
+                            FirstIdleID = q;
+                        }
+                    }
+                    if (Servers[FirstIdleID].ServerEndTime > CurrentCustomer.ArrivalTime )
+                    {
+                        CurrentCustomer.WaitingTime = CurrentCustomer.ArrivalTime - Servers[FirstIdleID].ServerEndTime;
+                        SystemStatistics.NoOfCustomersWait++;
+                        SystemStatistics.TotalWaitingTime += CurrentCustomer.WaitingTime;
+                        for (int x = Customers[i].ArrivalTime; x < Servers[FirstIdleID].ServerEndTime; x++)
+                            SystemStatistics.QueueLength[x]++;
+                    }
+                    CurrentCustomer.AssignedServer = Servers[FirstIdleID];
+                    CurrentCustomer.TimeServiceBegins = CurrentCustomer.ArrivalTime + CurrentCustomer.WaitingTime;
+                    CurrentCustomer.ServiceTime = this.GetServiceTimeFromRange(CurrentCustomer.AssignedServer, CurrentCustomer);
+
+                    CurrentCustomer.TimeServiceEnds = CurrentCustomer.TimeServiceBegins + CurrentCustomer.ServiceTime;
+                    Servers[FirstIdleID].ServerEndTime = CurrentCustomer.TimeServiceEnds;
+                    if (CurrentCustomer.TimeServiceEnds > SimulationEndTime)
+                        break;
+                    if (CurrentCustomer.RandomServiceTime == 100)
+                        CurrentCustomer.RandomServiceTime = 0;
+                    Customers.Add(CurrentCustomer);
+                    Servers[FirstIdleID].TotalServiceTime += CurrentCustomer.ServiceTime;
+                    Servers[FirstIdleID].TotalNumberOfCustomers++;
+                    i++;
+                }
+                return Customers;
             }
             else
             {
@@ -412,7 +553,7 @@ namespace Task1
                 int service_start = Customers[i].TimeServiceBegins;
                 int service_end = Customers[i].TimeServiceEnds;
                 //get busy units of time of current server
-                for (int j = service_start; j < service_end; j++)
+                for (int j = service_start; j <= service_end; j++)
                 {
                     data[server_id].Add(j);
                 }

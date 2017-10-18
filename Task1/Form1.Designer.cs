@@ -45,8 +45,10 @@
             this.GetinputBtn = new System.Windows.Forms.Button();
             this.statbutton = new System.Windows.Forms.Button();
             this.showgraph_btn = new System.Windows.Forms.Button();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.InputGrdView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OutputGrdView)).BeginInit();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -84,7 +86,7 @@
             // PriorityRadioBtn
             // 
             this.PriorityRadioBtn.AutoSize = true;
-            this.PriorityRadioBtn.Location = new System.Drawing.Point(31, 88);
+            this.PriorityRadioBtn.Location = new System.Drawing.Point(3, 3);
             this.PriorityRadioBtn.Name = "PriorityRadioBtn";
             this.PriorityRadioBtn.Size = new System.Drawing.Size(56, 17);
             this.PriorityRadioBtn.TabIndex = 4;
@@ -95,7 +97,7 @@
             // RandomRadioBtn
             // 
             this.RandomRadioBtn.AutoSize = true;
-            this.RandomRadioBtn.Location = new System.Drawing.Point(31, 111);
+            this.RandomRadioBtn.Location = new System.Drawing.Point(65, 3);
             this.RandomRadioBtn.Name = "RandomRadioBtn";
             this.RandomRadioBtn.Size = new System.Drawing.Size(65, 17);
             this.RandomRadioBtn.TabIndex = 5;
@@ -213,11 +215,22 @@
             this.showgraph_btn.UseVisualStyleBackColor = true;
             this.showgraph_btn.Click += new System.EventHandler(this.showgraph_btn_Click);
             // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.PriorityRadioBtn);
+            this.flowLayoutPanel1.Controls.Add(this.RandomRadioBtn);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(278, 88);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 100);
+            this.flowLayoutPanel1.TabIndex = 17;
+
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1240, 691);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.showgraph_btn);
             this.Controls.Add(this.statbutton);
             this.Controls.Add(this.GetinputBtn);
@@ -229,8 +242,6 @@
             this.Controls.Add(this.SimEndTimeRadioBtn);
             this.Controls.Add(this.MaxNoRadioBtn);
             this.Controls.Add(this.LeastUtiRadioBtn);
-            this.Controls.Add(this.RandomRadioBtn);
-            this.Controls.Add(this.PriorityRadioBtn);
             this.Controls.Add(this.OutputGrdView);
             this.Controls.Add(this.InputGrdView);
             this.Controls.Add(this.NoServersTxt);
@@ -239,6 +250,8 @@
             this.Text = "Servers Simulation";
             ((System.ComponentModel.ISupportInitialize)(this.InputGrdView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.OutputGrdView)).EndInit();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -263,6 +276,7 @@
         private System.Windows.Forms.Button GetinputBtn;
         private System.Windows.Forms.Button statbutton;
         private System.Windows.Forms.Button showgraph_btn;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
 
