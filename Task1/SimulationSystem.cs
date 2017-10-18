@@ -140,7 +140,7 @@ namespace Task1
                     // if all servers are busy and customer has to wait then calculate wait time
                     if (Servers[FirstIdleID].ServerEndTime > Customers[i].ArrivalTime)
                     {
-                        Customers[i].WaitingTime = (Servers[FirstIdleID].ServerEndTime - Customers[i].ArrivalTime);
+                        Customers[i].WaitingTime = Servers[FirstIdleID].ServerEndTime - Customers[i].ArrivalTime;
                         SystemStatistics.NoOfCustomersWait++;
                         SystemStatistics.TotalWaitingTime += Customers[i].WaitingTime;
                         for (int x = Customers[i].ArrivalTime; x < Servers[FirstIdleID].ServerEndTime; x++)
@@ -201,10 +201,10 @@ namespace Task1
                     }
                     if (Servers[FirstIdleID].ServerEndTime > CurrentCustomer.ArrivalTime)
                     {
-                        CurrentCustomer.WaitingTime = CurrentCustomer.ArrivalTime - Servers[FirstIdleID].ServerEndTime;
+                        CurrentCustomer.WaitingTime = Servers[FirstIdleID].ServerEndTime - CurrentCustomer.ArrivalTime;
                         SystemStatistics.NoOfCustomersWait++;
                         SystemStatistics.TotalWaitingTime += CurrentCustomer.WaitingTime;
-                        for (int x = Customers[i].ArrivalTime; x < Servers[FirstIdleID].ServerEndTime; x++)
+                        for (int x = CurrentCustomer.ArrivalTime; x < Servers[FirstIdleID].ServerEndTime; x++)
                             SystemStatistics.QueueLength[x]++;
                     }
                     CurrentCustomer.AssignedServer = Servers[FirstIdleID];
@@ -271,7 +271,7 @@ namespace Task1
                                 AssignedServer = q;
                             }
                         }
-                        Customers[i].WaitingTime = Customers[i].ArrivalTime - Servers[AssignedServer].ServerEndTime;
+                        Customers[i].WaitingTime = Servers[AssignedServer].ServerEndTime - Customers[i].ArrivalTime;
                         SystemStatistics.NoOfCustomersWait++;
                         SystemStatistics.TotalWaitingTime += Customers[i].WaitingTime;
                         for (int x = Customers[i].ArrivalTime; x < Servers[AssignedServer].ServerEndTime; x++)
@@ -315,11 +315,11 @@ namespace Task1
                         CurrentCustomer.ArrivalTime = 0;
                     }
                     CurrentCustomer.RandomServiceTime = Rnd.Next(1, 101);
-                    this.FillFreeServers(Customers[i].ArrivalTime);
+                    this.FillFreeServers(CurrentCustomer.ArrivalTime);
                     if (FreeServers.Count > 0)
                     {
                         AssignedServer = Rnd.Next(FreeServers.Count);
-                        Customers[i].AssignedServer = Servers[AssignedServer];
+                        CurrentCustomer.AssignedServer = Servers[AssignedServer];
                     }
                     else
                     {
@@ -334,10 +334,10 @@ namespace Task1
                                 AssignedServer = q;
                             }
                         }
-                        CurrentCustomer.WaitingTime = CurrentCustomer.ArrivalTime - Servers[AssignedServer].ServerEndTime;
+                        CurrentCustomer.WaitingTime = Servers[AssignedServer].ServerEndTime - CurrentCustomer.ArrivalTime;
                         SystemStatistics.TotalWaitingTime += CurrentCustomer.WaitingTime;
                         SystemStatistics.NoOfCustomersWait++;
-                        for (int x = Customers[i].ArrivalTime; x < Servers[AssignedServer].ServerEndTime; x++)
+                        for (int x = CurrentCustomer.ArrivalTime; x < Servers[AssignedServer].ServerEndTime; x++)
                             SystemStatistics.QueueLength[x]++;
                         CurrentCustomer.AssignedServer = Servers[AssignedServer];
                     }
@@ -393,7 +393,12 @@ namespace Task1
 
                     for (int q = 1; q < NoServers; q++)
                     {   //get the first idle server in order
-
+                        if(i==0)
+                        {
+                            FirstIdle = Servers[q];
+                            FirstIdleID = q;
+                            break;
+                        }
                         float server_utilization = Servers[q].TotalServiceTime / Customers[i - 1].TimeServiceEnds;
                        // if server is free and least utilization , update global utiization 
                         if (Servers[q].ServerEndTime <= Customers[i].ArrivalTime && (server_utilization < utilization))
@@ -465,10 +470,15 @@ namespace Task1
 
                     for (int q = 1; q < NoServers; q++)
                     {   //get the first idle server in order
-
+                        if(i==0)
+                        {
+                            FirstIdle = Servers[q];
+                            FirstIdleID = q;
+                            break;
+                        }
                         float server_utilization = Servers[q].TotalServiceTime / Customers[i - 1].TimeServiceEnds;
                         // if server is free and least utilization , update global utiization 
-                        if (Servers[q].ServerEndTime <= Customers[i].ArrivalTime && (server_utilization < utilization))
+                        if (Servers[q].ServerEndTime <= CurrentCustomer.ArrivalTime && (server_utilization < utilization))
                         {
                             FirstIdle = Servers[q];
                             FirstIdleID = q;
@@ -483,10 +493,10 @@ namespace Task1
                     }
                     if (Servers[FirstIdleID].ServerEndTime > CurrentCustomer.ArrivalTime )
                     {
-                        CurrentCustomer.WaitingTime = CurrentCustomer.ArrivalTime - Servers[FirstIdleID].ServerEndTime;
+                        CurrentCustomer.WaitingTime = Servers[FirstIdleID].ServerEndTime- CurrentCustomer.ArrivalTime ;
                         SystemStatistics.NoOfCustomersWait++;
                         SystemStatistics.TotalWaitingTime += CurrentCustomer.WaitingTime;
-                        for (int x = Customers[i].ArrivalTime; x < Servers[FirstIdleID].ServerEndTime; x++)
+                        for (int x = CurrentCustomer.ArrivalTime; x < Servers[FirstIdleID].ServerEndTime; x++)
                             SystemStatistics.QueueLength[x]++;
                     }
                     CurrentCustomer.AssignedServer = Servers[FirstIdleID];

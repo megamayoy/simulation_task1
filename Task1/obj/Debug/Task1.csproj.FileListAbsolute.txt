@@ -51,3 +51,16 @@ F:\Git WorkSpace\simulation_task1\Task1\obj\Debug\Task1.csproj.GenerateResource.
 F:\Git WorkSpace\simulation_task1\Task1\obj\Debug\Task1.csproj.CoreCompileInputs.cache
 F:\Git WorkSpace\simulation_task1\Task1\obj\Debug\Task1.exe
 F:\Git WorkSpace\simulation_task1\Task1\obj\Debug\Task1.pdb
+D:\simulation_task1\Task1\bin\Debug\Task1.exe.config
+D:\simulation_task1\Task1\bin\Debug\Task1.exe
+D:\simulation_task1\Task1\bin\Debug\Task1.pdb
+D:\simulation_task1\Task1\bin\Debug\MultiChannelQueueModels.dll
+D:\simulation_task1\Task1\bin\Debug\MultiChannelQueueModels.pdb
+D:\simulation_task1\Task1\obj\Debug\Task1.Form1.resources
+D:\simulation_task1\Task1\obj\Debug\Task1.graphform.resources
+D:\simulation_task1\Task1\obj\Debug\Task1.Properties.Resources.resources
+D:\simulation_task1\Task1\obj\Debug\Task1.statform.resources
+D:\simulation_task1\Task1\obj\Debug\Task1.csproj.GenerateResource.Cache
+D:\simulation_task1\Task1\obj\Debug\Task1.csproj.CoreCompileInputs.cache
+D:\simulation_task1\Task1\obj\Debug\Task1.exe
+D:\simulation_task1\Task1\obj\Debug\Task1.pdb
